@@ -81,6 +81,7 @@ hypr-db-parser = { path = "crates/db-parser", package = "db-parser" }
 hypr-db-user = { path = "crates/db-user", package = "db-user" }
 hypr-db-watch = { path = "crates/db-watch", package = "db-watch" }
 hypr-denoise = { path = "crates/denoise", package = "denoise" }
+hypr-diarization = { path = "crates/diarization", package = "diarization" }
 hypr-detect = { path = "crates/detect", package = "detect" }
 hypr-device-monitor = { path = "crates/device-monitor", package = "device-monitor" }
 hypr-docs = { path = "crates/docs", package = "docs" }
