@@ -59,16 +59,18 @@ Choose from predefined templates (bullet points, agenda-based, paragraph) or cre
 
 ## Roadmap
 
-### Phase 1 (Current)
+### Phase 1 (Complete)
 
 - [x] Repository rebranding to Kagemusha AI
 - [x] Dual-channel transcription foundation (separate audio streams + merge) — backend complete, mic (Channel 0) and speaker (Channel 1) are captured independently
 - [x] Sengoku-themed templates: Commander's Battle Plan, After-Battle Review, Shadow Warrior's Intelligence Brief
 
-### Phase 2
+### Phase 2 (Current)
 
-- [ ] Real-time lightweight Live Assist (side panel + key point highlights + auto-complete)
-- [ ] Conversation metrics calculation and post-processing
+- [x] Real-time lightweight Live Assist — side panel with keyword-based key point detection (decisions, actions, questions)
+- [x] Conversation metrics — talk ratio, speaking pace (WPM), question count, meeting duration per speaker
+- [ ] Live Assist: LLM-powered intelligent summarization during meetings
+- [ ] Metrics integration into enhanced notes post-processing
 
 ### Phase 3
 
