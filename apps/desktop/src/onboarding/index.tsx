@@ -1,10 +1,8 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { platform } from "@tauri-apps/plugin-os";
-import { Volume2Icon, VolumeXIcon } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { commands as analyticsCommands } from "@hypr/plugin-analytics";
-import { commands as sfxCommands } from "@hypr/plugin-sfx";
 
 import { LoginSection } from "./account";
 import { CalendarSection } from "./calendar";
@@ -67,7 +65,6 @@ export function TabContentOnboarding({
   const close = useTabs((state) => state.close);
   const currentTab = useTabs((state) => state.currentTab);
   const auth = useAuth();
-  const [isMuted, setIsMuted] = useState(false);
   const [currentStep, setCurrentStep] = useState(getInitialStep);
   const [didSkipLogin, setDidSkipLogin] = useState(false);
   const onboardingVideoRef = useRef<HTMLVideoElement>(null);
@@ -95,19 +92,20 @@ export function TabContentOnboarding({
     });
   }, [currentStep]);
 
-  useEffect(() => {
-    sfxCommands
-      .play("BGM")
-      .then(() => sfxCommands.setVolume("BGM", 0.2))
-      .catch(console.error);
-    return () => {
-      sfxCommands.stop("BGM").catch(console.error);
-    };
-  }, []);
+  // BGM disabled — replace plugins/sfx/sounds/bgm.mp3 to re-enable
+  // useEffect(() => {
+  //   sfxCommands
+  //     .play("BGM")
+  //     .then(() => sfxCommands.setVolume("BGM", 0.2))
+  //     .catch(console.error);
+  //   return () => {
+  //     sfxCommands.stop("BGM").catch(console.error);
+  //   };
+  // }, []);
 
-  useEffect(() => {
-    sfxCommands.setVolume("BGM", isMuted ? 0 : 0.2).catch(console.error);
-  }, [isMuted]);
+  // useEffect(() => {
+  //   sfxCommands.setVolume("BGM", isMuted ? 0 : 0.2).catch(console.error);
+  // }, [isMuted]);
 
   useEffect(() => {
     if (onboardingVideoRef.current) {
@@ -144,21 +142,10 @@ export function TabContentOnboarding({
           <div className="absolute inset-x-0 top-0 h-[84%] bg-linear-to-b from-stone-50 via-stone-50/82 via-stone-50/97 via-18% via-42% to-stone-50/0" />
         </div>
 
-        <div className="sticky top-0 z-10 flex items-center justify-between px-6 pt-4 pb-3">
+        <div className="sticky top-0 z-10 px-6 pt-4 pb-3">
           <h1 className="font-serif text-2xl font-semibold text-neutral-900">
-            影武者AIへようこそ
+            Kagemusha AIへようこそ
           </h1>
-          <button
-            onClick={() => setIsMuted((prev) => !prev)}
-            className="rounded-full p-1.5 transition-colors hover:bg-neutral-100"
-            aria-label={isMuted ? "Unmute" : "Mute"}
-          >
-            {isMuted ? (
-              <VolumeXIcon size={16} className="text-neutral-600" />
-            ) : (
-              <Volume2Icon size={16} className="text-neutral-600" />
-            )}
-          </button>
         </div>
 
         <div className="relative z-10 flex-1 overflow-y-auto">
