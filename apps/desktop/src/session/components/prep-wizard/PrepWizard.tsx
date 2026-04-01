@@ -39,6 +39,7 @@ export function PrepWizard({ sessionId }: { sessionId: string }) {
     questions,
     checklist,
     isGenerating,
+    error,
     generate,
     toggle,
     eventTitle,
@@ -71,6 +72,12 @@ export function PrepWizard({ sessionId }: { sessionId: string }) {
           </p>
         )}
       </div>
+
+      {error && (
+        <div className="rounded-md border border-red-200 bg-red-50 p-2 text-xs text-red-700">
+          {error}
+        </div>
+      )}
 
       {!hasContent && (
         <button

@@ -23,8 +23,12 @@ export function calculateConversationMetrics(
     return { totalDurationMs: 0, speakers: [] };
   }
 
-  const minStartMs = Math.min(...words.map((w) => w.start_ms));
-  const maxEndMs = Math.max(...words.map((w) => w.end_ms));
+  let minStartMs = Infinity;
+  let maxEndMs = -Infinity;
+  for (const w of words) {
+    if (w.start_ms < minStartMs) minStartMs = w.start_ms;
+    if (w.end_ms > maxEndMs) maxEndMs = w.end_ms;
+  }
   const totalDurationMs = maxEndMs - minStartMs;
 
   const grouped = new Map<
@@ -43,7 +47,7 @@ export function calculateConversationMetrics(
     entry.talkTimeMs += Math.max(0, word.end_ms - word.start_ms);
     entry.wordCount += 1;
 
-    if (word.text.trim().endsWith("?")) {
+    if (word.text?.trim().endsWith("?")) {
       entry.questionCount += 1;
     }
   }

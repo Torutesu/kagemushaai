@@ -1,5 +1,7 @@
 import { useMemo } from "react";
 
+import type { WordStorage } from "@hypr/store";
+
 import { parseTranscriptWords } from "~/stt/utils";
 import * as main from "~/store/tinybase/store/main";
 
@@ -7,6 +9,8 @@ import {
   calculateConversationMetrics,
   type ConversationMetrics,
 } from "./calculator";
+
+type WordWithId = WordStorage & { id: string };
 
 export function useConversationMetrics(
   sessionId: string,
@@ -16,7 +20,7 @@ export function useConversationMetrics(
   return useMemo(() => {
     if (!store) return null;
 
-    const allWords: Array<{ id: string } & Record<string, unknown>> = [];
+    const allWords: WordWithId[] = [];
 
     store.forEachRow("transcripts", (transcriptId) => {
       const sid = store.getCell("transcripts", transcriptId, "session_id");
@@ -28,6 +32,6 @@ export function useConversationMetrics(
 
     if (allWords.length === 0) return null;
 
-    return calculateConversationMetrics(allWords as any);
+    return calculateConversationMetrics(allWords);
   }, [store, sessionId]);
 }

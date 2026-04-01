@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { streamText } from "ai";
 
 import { useLanguageModel } from "~/ai/hooks/useLLMConnection";
@@ -14,6 +14,7 @@ export interface PrepData {
   questions: PrepItem[];
   checklist: PrepItem[];
   isGenerating: boolean;
+  error: string | null;
 }
 
 const PREP_SYSTEM_PROMPT = `You are a meeting preparation assistant. Given the meeting details, generate:
@@ -63,9 +64,8 @@ function parsePrepResponse(text: string): {
   return { questions, checklist };
 }
 
-let nextId = 0;
 function makeItem(text: string): PrepItem {
-  return { id: `prep-${nextId++}`, text, checked: false };
+  return { id: crypto.randomUUID(), text, checked: false };
 }
 
 export function usePrepWizard(sessionId: string): PrepData & {
@@ -80,6 +80,8 @@ export function usePrepWizard(sessionId: string): PrepData & {
   const [questions, setQuestions] = useState<PrepItem[]>([]);
   const [checklist, setChecklist] = useState<PrepItem[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const abortRef = useRef<AbortController | null>(null);
 
   const hasEvent = !!sessionEvent;
   const eventTitle = sessionEvent?.title ?? null;
@@ -88,7 +90,10 @@ export function usePrepWizard(sessionId: string): PrepData & {
   const generate = useCallback(async () => {
     if (!model || !sessionEvent) return;
 
+    abortRef.current?.abort();
+    abortRef.current = new AbortController();
     setIsGenerating(true);
+    setError(null);
 
     const prompt = [
       `Meeting: ${sessionEvent.title}`,
@@ -109,6 +114,7 @@ export function usePrepWizard(sessionId: string): PrepData & {
         model,
         system: PREP_SYSTEM_PROMPT,
         prompt,
+        abortSignal: abortRef.current.signal,
       });
 
       for await (const chunk of result.textStream) {
@@ -116,10 +122,15 @@ export function usePrepWizard(sessionId: string): PrepData & {
       }
 
       const parsed = parsePrepResponse(fullText);
+      if (parsed.questions.length === 0 && parsed.checklist.length === 0) {
+        setError("Could not parse preparation items. Try regenerating.");
+        return;
+      }
       setQuestions(parsed.questions.map(makeItem));
       setChecklist(parsed.checklist.map(makeItem));
-    } catch (error) {
-      console.error("Prep wizard generation failed:", error);
+    } catch (err: unknown) {
+      if (err instanceof Error && err.name === "AbortError") return;
+      setError("Preparation generation failed. Check your LLM connection.");
     } finally {
       setIsGenerating(false);
     }
@@ -134,10 +145,17 @@ export function usePrepWizard(sessionId: string): PrepData & {
     );
   }, []);
 
+  useEffect(() => {
+    return () => {
+      abortRef.current?.abort();
+    };
+  }, []);
+
   return {
     questions,
     checklist,
     isGenerating,
+    error,
     generate,
     toggle,
     eventTitle,

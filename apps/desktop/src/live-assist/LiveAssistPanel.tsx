@@ -77,10 +77,13 @@ export function LiveAssistPanel() {
   const [keyPoints, setKeyPoints] = useState<KeyPoint[]>([]);
   const [summary, setSummary] = useState("");
   const [isSummarizing, setIsSummarizing] = useState(false);
+  const [summaryError, setSummaryError] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const abortRef = useRef<AbortController | null>(null);
   const lastSummarizedCountRef = useRef(0);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const segmentsRef = useRef(liveSegments);
+  segmentsRef.current = liveSegments;
 
   useEffect(() => {
     const points = extractKeyPoints(liveSegments);
@@ -94,21 +97,23 @@ export function LiveAssistPanel() {
   }, [keyPoints, summary]);
 
   const runSummary = useCallback(async () => {
-    if (!model || liveSegments.length === 0) return;
-    if (liveSegments.length === lastSummarizedCountRef.current) return;
+    const segments = segmentsRef.current;
+    if (!model || segments.length === 0) return;
+    if (segments.length === lastSummarizedCountRef.current) return;
 
     abortRef.current?.abort();
     abortRef.current = new AbortController();
     setIsSummarizing(true);
-    lastSummarizedCountRef.current = liveSegments.length;
+    setSummaryError(null);
+    lastSummarizedCountRef.current = segments.length;
 
-    const recentText = liveSegments
+    const recentText = segments
       .slice(-20)
       .map((s) => s.text)
       .join("\n");
 
     try {
-      let fullText = "";
+      const parts: string[] = [];
       const result = streamText({
         model,
         system: SUMMARIZE_SYSTEM_PROMPT,
@@ -117,15 +122,16 @@ export function LiveAssistPanel() {
       });
 
       for await (const chunk of result.textStream) {
-        fullText += chunk;
-        setSummary(fullText);
+        parts.push(chunk);
+        setSummary(parts.join(""));
       }
-    } catch {
-      // aborted or error
+    } catch (error: unknown) {
+      if (error instanceof Error && error.name === "AbortError") return;
+      setSummaryError("Summary generation failed");
     } finally {
       setIsSummarizing(false);
     }
-  }, [model, liveSegments]);
+  }, [model]);
 
   useEffect(() => {
     if (!model || liveSegments.length < 5) return;
@@ -142,6 +148,7 @@ export function LiveAssistPanel() {
   useEffect(() => {
     return () => {
       abortRef.current?.abort();
+      if (timerRef.current) clearTimeout(timerRef.current);
     };
   }, []);
 
@@ -176,6 +183,12 @@ export function LiveAssistPanel() {
       </div>
 
       <div ref={scrollRef} className={cn(["flex-1 overflow-y-auto", "p-3"])}>
+        {summaryError && (
+          <div className="mb-3 rounded-md border border-red-200 bg-red-50 p-2 text-xs text-red-700">
+            {summaryError}
+          </div>
+        )}
+
         {summary && (
           <div
             className={cn([

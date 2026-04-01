@@ -31,6 +31,11 @@ export function MetricsPanel({ metrics }: { metrics: ConversationMetrics }) {
           </div>
 
           <div
+            role="progressbar"
+            aria-valuenow={Math.round(speaker.talkRatio * 100)}
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-label={`${speaker.speakerId === "you" ? "You" : speaker.speakerId} talk ratio`}
             className={cn(["h-2 w-full rounded-full", "bg-muted overflow-hidden"])}
           >
             <div
