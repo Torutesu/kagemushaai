@@ -60,7 +60,7 @@ export function ChatTrigger({
     >
       <img
         src="/assets/char-logo-icon-black.svg"
-        alt="Char"
+        alt="Kagemusha AI"
         className="size-[18px] shrink-0 object-contain"
       />
       <span className="text-md font-medium">Chat with notes</span>

@@ -146,7 +146,7 @@ export function TabContentOnboarding({
 
         <div className="sticky top-0 z-10 flex items-center justify-between px-6 pt-4 pb-3">
           <h1 className="font-serif text-2xl font-semibold text-neutral-900">
-            Welcome to Char
+            影武者AIへようこそ
           </h1>
           <button
             onClick={() => setIsMuted((prev) => !prev)}
@@ -176,7 +176,7 @@ export function TabContentOnboarding({
 
             <OnboardingSection
               title="Account"
-              description="Start using Char to focus on people, not note-taking"
+              description="Start using Kagemusha AI to focus on people, not note-taking"
               completedTitle={
                 auth.session
                   ? "Signed in"
