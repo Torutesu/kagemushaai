@@ -1,0 +1,9 @@
+[package]
+name = "diarization"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+hypr-pyannote-local = { path = "../pyannote-local", package = "pyannote-local" }
+tracing = "0.1"
+thiserror = "2"
