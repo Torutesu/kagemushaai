@@ -1,8 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { streamText } from "ai";
 
 import { cn } from "@hypr/utils";
 import type { LiveTranscriptSegment } from "@hypr/plugin-listener";
 
+import { useLanguageModel } from "~/ai/hooks/useLLMConnection";
 import { useListener } from "~/stt/contexts";
 
 interface KeyPoint {
@@ -65,10 +67,20 @@ function formatTimestamp(ms: number): string {
   return `${minutes}:${String(seconds).padStart(2, "0")}`;
 }
 
+const SUMMARIZE_SYSTEM_PROMPT = `You are a meeting assistant. Given the recent transcript segments, provide a brief 2-3 sentence summary of what was discussed. Focus on key decisions, action items, and important topics. Be concise.`;
+
+const SUMMARIZE_DEBOUNCE_MS = 30_000;
+
 export function LiveAssistPanel() {
   const liveSegments = useListener((state) => state.liveSegments);
+  const model = useLanguageModel();
   const [keyPoints, setKeyPoints] = useState<KeyPoint[]>([]);
+  const [summary, setSummary] = useState("");
+  const [isSummarizing, setIsSummarizing] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const abortRef = useRef<AbortController | null>(null);
+  const lastSummarizedCountRef = useRef(0);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const points = extractKeyPoints(liveSegments);
@@ -79,25 +91,106 @@ export function LiveAssistPanel() {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
-  }, [keyPoints]);
+  }, [keyPoints, summary]);
+
+  const runSummary = useCallback(async () => {
+    if (!model || liveSegments.length === 0) return;
+    if (liveSegments.length === lastSummarizedCountRef.current) return;
+
+    abortRef.current?.abort();
+    abortRef.current = new AbortController();
+    setIsSummarizing(true);
+    lastSummarizedCountRef.current = liveSegments.length;
+
+    const recentText = liveSegments
+      .slice(-20)
+      .map((s) => s.text)
+      .join("\n");
+
+    try {
+      let fullText = "";
+      const result = streamText({
+        model,
+        system: SUMMARIZE_SYSTEM_PROMPT,
+        prompt: recentText,
+        abortSignal: abortRef.current.signal,
+      });
+
+      for await (const chunk of result.textStream) {
+        fullText += chunk;
+        setSummary(fullText);
+      }
+    } catch {
+      // aborted or error
+    } finally {
+      setIsSummarizing(false);
+    }
+  }, [model, liveSegments]);
+
+  useEffect(() => {
+    if (!model || liveSegments.length < 5) return;
+    if (liveSegments.length === lastSummarizedCountRef.current) return;
+
+    if (timerRef.current) clearTimeout(timerRef.current);
+    timerRef.current = setTimeout(runSummary, SUMMARIZE_DEBOUNCE_MS);
+
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, [liveSegments.length, model, runSummary]);
+
+  useEffect(() => {
+    return () => {
+      abortRef.current?.abort();
+    };
+  }, []);
 
   return (
     <div className={cn(["flex h-full flex-col", "rounded-lg border bg-white"])}>
       <div
         className={cn([
-          "flex items-center gap-2",
+          "flex items-center justify-between",
           "border-b px-4 py-3",
           "text-sm font-medium",
         ])}
       >
-        <span>Live Assist</span>
-        <span className="text-muted-foreground">
-          ({keyPoints.length} points)
-        </span>
+        <div className="flex items-center gap-2">
+          <span>Live Assist</span>
+          <span className="text-muted-foreground">
+            ({keyPoints.length} points)
+          </span>
+        </div>
+        {model && liveSegments.length >= 5 && (
+          <button
+            onClick={runSummary}
+            disabled={isSummarizing}
+            className={cn([
+              "rounded px-2 py-1 text-xs",
+              "bg-primary/10 text-primary hover:bg-primary/20",
+              "disabled:opacity-50",
+            ])}
+          >
+            {isSummarizing ? "Summarizing..." : "Summarize"}
+          </button>
+        )}
       </div>
 
       <div ref={scrollRef} className={cn(["flex-1 overflow-y-auto", "p-3"])}>
-        {keyPoints.length === 0 ? (
+        {summary && (
+          <div
+            className={cn([
+              "mb-3 rounded-lg border p-3",
+              "bg-primary/5",
+            ])}
+          >
+            <div className="mb-1 text-xs font-medium text-primary">
+              AI Summary
+            </div>
+            <p className="text-sm leading-relaxed">{summary}</p>
+          </div>
+        )}
+
+        {keyPoints.length === 0 && !summary ? (
           <div
             className={cn([
               "flex h-full items-center justify-center",
