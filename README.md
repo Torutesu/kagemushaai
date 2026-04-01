@@ -12,7 +12,7 @@
 Kagemusha AI is an AI-powered meeting note app that acts as your **shadow warrior** — quietly capturing everything so you can stay focused on the conversation.
 
 - **影のように静かに記録する** — Listens to your meetings without bots; captures audio directly from your computer
-- **主君の声と敵将の声を聞き分ける** — Dual-channel transcription separates your voice from others (planned)
+- **主君の声と敵将の声を聞き分ける** — Dual-channel transcription separates your voice (mic) from others (system audio)
 - **影武者がそっと耳打ちする** — Lightweight real-time assist highlights key points during meetings (planned)
 - **戦況を冷静に報告する** — Conversation metrics: talk ratio, speaking pace, question count (planned)
 - Crafts perfect **summaries** from your memos after meetings end
@@ -62,8 +62,8 @@ Choose from predefined templates (bullet points, agenda-based, paragraph) or cre
 ### Phase 1 (Current)
 
 - [x] Repository rebranding to Kagemusha AI
-- [ ] Dual-channel transcription foundation (separate audio streams + merge)
-- [ ] Sengoku-themed templates (e.g., gunbai-style action items)
+- [x] Dual-channel transcription foundation (separate audio streams + merge) — backend complete, mic (Channel 0) and speaker (Channel 1) are captured independently
+- [x] Sengoku-themed templates: Commander's Battle Plan, After-Battle Review, Shadow Warrior's Intelligence Brief
 
 ### Phase 2
 
