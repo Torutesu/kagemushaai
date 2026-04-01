@@ -37,7 +37,7 @@ type Provider = {
 const _PROVIDERS = [
   {
     id: "hyprnote",
-    displayName: "Char",
+    displayName: "Kagemusha AI",
     badge: "Recommended",
     icon: <CharProviderIcon />,
     baseUrl: new URL("/llm", env.VITE_API_URL).toString(),
