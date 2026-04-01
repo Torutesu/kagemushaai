@@ -14,6 +14,7 @@ function createParams(
   const store = {
     setPartialRow: vi.fn(),
     getCell: vi.fn().mockReturnValue(""),
+    forEachRow: vi.fn(),
   } as unknown as EnhanceSuccessParams["store"];
 
   return {
@@ -57,6 +58,7 @@ describe("enhanceSuccess.onSuccess", () => {
     const store = {
       setPartialRow: vi.fn(),
       getCell: vi.fn().mockReturnValue(""),
+      forEachRow: vi.fn(),
     } as unknown as EnhanceSuccessParams["store"];
     const startTask = vi.fn().mockResolvedValue(undefined);
     const params = createParams({ store, startTask });
