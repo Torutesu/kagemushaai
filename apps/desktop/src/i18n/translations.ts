@@ -28,6 +28,8 @@ const translations = {
     "template.gunbai": "Commander's Battle Plan",
     "template.retrospective": "After-Battle Review",
     "template.briefing": "Shadow Warrior's Intelligence Brief",
+    "onboarding.localMode": "Start in Local Mode",
+    "onboarding.localModeHint": "You can sign in later from Settings",
   },
   ja: {
     "session.welcome": "影武者AIへようこそ",
@@ -58,6 +60,8 @@ const translations = {
     "template.gunbai": "軍配アクションアイテム",
     "template.retrospective": "戦国振り返り",
     "template.briefing": "影武者ブリーフィング",
+    "onboarding.localMode": "ローカルモードで始める",
+    "onboarding.localModeHint": "設定から後でサインインできます",
   },
 } as const;
 
