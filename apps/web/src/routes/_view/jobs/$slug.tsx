@@ -81,7 +81,7 @@ function JobPage() {
 function getApplyUrl(job: (typeof allJobs)[0]) {
   return (
     job.applyUrl ||
-    `mailto:founders@char.com?subject=Application for ${job.title}`
+    `mailto:founders@kagemusha.ai?subject=Application for ${job.title}`
   );
 }
 

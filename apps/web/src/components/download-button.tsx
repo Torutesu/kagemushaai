@@ -20,13 +20,13 @@ export function DownloadButton() {
       case "windows":
         return {
           icon: "mdi:microsoft-windows",
-          label: "Download Char",
+          label: "Download Kagemusha AI",
           href: "/download/",
         };
       case "linux":
         return {
           icon: "mdi:apple",
-          label: "Download Char",
+          label: "Download Kagemusha AI",
           href: "/download/",
         };
       default:

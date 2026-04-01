@@ -6,7 +6,7 @@ export function SidebarDownloadCard() {
   return (
     <div className="overflow-hidden rounded-xs border border-neutral-200 bg-white bg-[linear-gradient(to_right,#f5f5f5_1px,transparent_1px),linear-gradient(to_bottom,#f5f5f5_1px,transparent_1px)] bg-size-[24px_24px] bg-position-[12px_12px,12px_12px] p-4">
       <h3 className="mb-3 text-center font-serif text-sm text-stone-700">
-        Try Char for yourself
+        Try Kagemusha AI for yourself
       </h3>
       <Link
         to="/download/"

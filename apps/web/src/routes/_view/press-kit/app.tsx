@@ -32,7 +32,7 @@ export const Route = createFileRoute("/_view/press-kit/app")({
       { title: "App Screenshots - Char Press Kit" },
       {
         name: "description",
-        content: "Download Char app screenshots and UI assets.",
+        content: "Download Kagemusha AI app screenshots and UI assets.",
       },
     ],
   }),
@@ -149,7 +149,7 @@ function HeroSection() {
           App Screenshots
         </h1>
         <p className="text-lg text-neutral-600 sm:text-xl">
-          Download high-quality screenshots of Char for press and marketing
+          Download high-quality screenshots of Kagemusha AI for press and marketing
           materials.
         </p>
       </div>
