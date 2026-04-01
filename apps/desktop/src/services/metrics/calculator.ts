@@ -26,8 +26,10 @@ export function calculateConversationMetrics(
   let minStartMs = Infinity;
   let maxEndMs = -Infinity;
   for (const w of words) {
-    if (w.start_ms < minStartMs) minStartMs = w.start_ms;
-    if (w.end_ms > maxEndMs) maxEndMs = w.end_ms;
+    const startMs = w.start_ms ?? 0;
+    const endMs = w.end_ms ?? 0;
+    if (startMs < minStartMs) minStartMs = startMs;
+    if (endMs > maxEndMs) maxEndMs = endMs;
   }
   const totalDurationMs = maxEndMs - minStartMs;
 
@@ -44,7 +46,7 @@ export function calculateConversationMetrics(
       grouped.set(speakerId, entry);
     }
 
-    entry.talkTimeMs += Math.max(0, word.end_ms - word.start_ms);
+    entry.talkTimeMs += Math.max(0, (word.end_ms ?? 0) - (word.start_ms ?? 0));
     entry.wordCount += 1;
 
     if (word.text?.trim().endsWith("?")) {

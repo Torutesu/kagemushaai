@@ -9,7 +9,7 @@ import type { Store as MainStore } from "~/store/tinybase/store/main";
 function computeSessionMetrics(store: MainStore, sessionId: string): string | null {
   const allWords: ReturnType<typeof parseTranscriptWords> = [];
 
-  store.forEachRow("transcripts", (transcriptId: string) => {
+  store.forEachRow("transcripts", (transcriptId: string, _forEachCell) => {
     const sid = store.getCell("transcripts", transcriptId, "session_id");
     if (sid !== sessionId) return;
     const words = parseTranscriptWords(store, transcriptId);

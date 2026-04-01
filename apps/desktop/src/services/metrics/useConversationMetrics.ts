@@ -22,7 +22,7 @@ export function useConversationMetrics(
 
     const allWords: WordWithId[] = [];
 
-    store.forEachRow("transcripts", (transcriptId) => {
+    store.forEachRow("transcripts", (transcriptId, _forEachCell) => {
       const sid = store.getCell("transcripts", transcriptId, "session_id");
       if (sid !== sessionId) return;
 

@@ -1,19 +1,21 @@
 import { describe, expect, it } from "vitest";
 
+import type { LiveTranscriptSegment } from "@hypr/plugin-listener";
+
 import { extractKeyPoints } from "./extractKeyPoints";
 
 function segment(overrides: {
   id?: string;
   text: string;
   start_ms?: number;
-}) {
+}): LiveTranscriptSegment {
   return {
     id: overrides.id ?? "seg-1",
     text: overrides.text,
     start_ms: overrides.start_ms ?? 0,
     end_ms: (overrides.start_ms ?? 0) + 1000,
-    channel: 0,
-    confidence: 1,
+    key: { channel: "DirectMic" },
+    words: [],
   };
 }
 
