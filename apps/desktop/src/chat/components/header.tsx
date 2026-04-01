@@ -171,7 +171,7 @@ function ChatGroups({
         >
           <img
             src="/assets/char-logo-icon-black.svg"
-            alt="Char"
+            alt="Kagemusha AI"
             className="size-[13px] shrink-0 object-contain opacity-55 transition-opacity group-hover:opacity-75"
           />
           <h3 className="min-w-0 flex-1 truncate text-xs font-medium text-neutral-700">

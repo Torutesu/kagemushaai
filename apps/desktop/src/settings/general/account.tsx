@@ -47,7 +47,7 @@ const ACCOUNT_FEATURES = [
   {
     label: "Integrations",
     icon: Puzzle,
-    benefit: "Connect tools and pull context into Char with less busywork.",
+    benefit: "Connect tools and pull context into Kagemusha AI with less busywork.",
     accent: {
       icon: "text-purple-700",
       label: "text-purple-900",

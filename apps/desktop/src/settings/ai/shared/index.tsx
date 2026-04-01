@@ -52,7 +52,7 @@ export function CharProviderIcon() {
   return (
     <img
       src="/assets/char-logo-icon-black.svg"
-      alt="Char"
+      alt="Kagemusha AI"
       className="size-3.5 object-contain"
     />
   );

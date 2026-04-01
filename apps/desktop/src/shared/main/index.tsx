@@ -704,7 +704,7 @@ function TabChatButton({
           >
             <img
               src="/assets/char-logo-icon-black.svg"
-              alt="Char"
+              alt="Kagemusha AI"
               className={cn([
                 "size-[13px] shrink-0 object-contain opacity-65",
                 isTabbarSelected && "opacity-100",
