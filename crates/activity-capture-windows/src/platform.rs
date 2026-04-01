@@ -1,3 +1,5 @@
+#![cfg(target_os = "windows")]
+
 use std::time::SystemTime;
 
 use hypr_activity_capture_interface::{
@@ -15,12 +17,22 @@ fn get_process_name(pid: u32) -> Option<String> {
     use windows::Win32::System::Threading::PROCESS_NAME_FORMAT;
 
     unsafe {
-        let handle = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, false, pid).ok()?;
+        let handle = match OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, false, pid) {
+            Ok(h) => h,
+            Err(e) => {
+                tracing::warn!(pid, error = %e, "failed to open process");
+                return None;
+            }
+        };
         let mut buf = [0u16; 1024];
         let mut size = buf.len() as u32;
-        QueryFullProcessImageNameW(handle, PROCESS_NAME_FORMAT(0), &mut buf, &mut size).ok()?;
+        let result =
+            QueryFullProcessImageNameW(handle, PROCESS_NAME_FORMAT(0), &mut buf, &mut size);
+        if let Err(e) = windows::Win32::Foundation::CloseHandle(handle) {
+            tracing::warn!(error = %e, "failed to close process handle");
+        }
+        result.ok()?;
         let path = String::from_utf16_lossy(&buf[..size as usize]);
-        let _ = windows::Win32::Foundation::CloseHandle(handle);
         path.rsplit('\\').next().map(|s| s.to_string())
     }
 }
@@ -33,8 +45,9 @@ fn foreground_snapshot() -> Option<Snapshot> {
         }
 
         let title_len = GetWindowTextLengthW(hwnd);
-        let window_title = if title_len > 0 {
-            let mut buf = vec![0u16; (title_len + 1) as usize];
+        let capped_len = title_len.min(4096);
+        let window_title = if capped_len > 0 {
+            let mut buf = vec![0u16; (capped_len + 1) as usize];
             let copied = GetWindowTextW(hwnd, &mut buf);
             if copied > 0 {
                 Some(String::from_utf16_lossy(&buf[..copied as usize]))
