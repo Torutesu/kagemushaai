@@ -65,17 +65,17 @@ Choose from predefined templates (bullet points, agenda-based, paragraph) or cre
 - [x] Dual-channel transcription foundation (separate audio streams + merge) — backend complete, mic (Channel 0) and speaker (Channel 1) are captured independently
 - [x] Sengoku-themed templates: Commander's Battle Plan, After-Battle Review, Shadow Warrior's Intelligence Brief
 
-### Phase 2 (Current)
+### Phase 2 (Complete)
 
 - [x] Real-time lightweight Live Assist — side panel with keyword-based key point detection (decisions, actions, questions)
 - [x] Conversation metrics — talk ratio, speaking pace (WPM), question count, meeting duration per speaker
-- [ ] Live Assist: LLM-powered intelligent summarization during meetings
-- [ ] Metrics integration into enhanced notes post-processing
+- [x] Live Assist: LLM-powered streaming summarization during meetings (30s debounce, manual trigger)
+- [x] Metrics integration into enhanced notes post-processing (`_conversationMetrics` in content JSON)
 
-### Phase 3
+### Phase 3 (Current)
 
-- [ ] Pre-meeting preparation wizard
-- [ ] High-accuracy speaker diarization
+- [x] Pre-meeting preparation wizard — AI-generated questions and checklists from calendar events
+- [ ] High-accuracy speaker diarization (pyannote / ECAPA-TDNN integration)
 - [ ] Windows support
 
 ## Tech Stack
