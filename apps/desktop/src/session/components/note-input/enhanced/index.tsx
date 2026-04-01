@@ -1,4 +1,4 @@
-import { forwardRef } from "react";
+import { forwardRef, useMemo } from "react";
 
 import { type TiptapEditor } from "@hypr/tiptap/editor";
 
@@ -9,6 +9,10 @@ import { StreamingView } from "./streaming";
 
 import { useAITaskTask } from "~/ai/hooks";
 import { useLLMConnectionStatus } from "~/ai/hooks";
+import {
+  MetricsPanel,
+  type ConversationMetrics,
+} from "~/services/metrics";
 import * as main from "~/store/tinybase/store/main";
 import { createTaskId } from "~/store/zustand/ai-task/task-configs";
 
@@ -27,6 +31,19 @@ export const Enhanced = forwardRef<
   );
 
   const hasContent = typeof content === "string" && content.trim().length > 0;
+
+  const metrics = useMemo<ConversationMetrics | null>(() => {
+    if (typeof content !== "string") return null;
+    try {
+      const parsed = JSON.parse(content);
+      if (parsed && parsed._conversationMetrics) {
+        return parsed._conversationMetrics as ConversationMetrics;
+      }
+    } catch {
+      // content is not valid JSON or has no metrics
+    }
+    return null;
+  }, [content]);
 
   const isConfigError =
     llmStatus.status === "pending" ||
@@ -54,11 +71,18 @@ export const Enhanced = forwardRef<
   }
 
   return (
-    <EnhancedEditor
-      ref={ref}
-      sessionId={sessionId}
-      enhancedNoteId={enhancedNoteId}
-      onNavigateToTitle={onNavigateToTitle}
-    />
+    <>
+      <EnhancedEditor
+        ref={ref}
+        sessionId={sessionId}
+        enhancedNoteId={enhancedNoteId}
+        onNavigateToTitle={onNavigateToTitle}
+      />
+      {metrics && (
+        <div className="border-t mt-4">
+          <MetricsPanel metrics={metrics} />
+        </div>
+      )}
+    </>
   );
 });
