@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { streamText } from "ai";
 
 import { useLanguageModel } from "~/ai/hooks/useLLMConnection";
+import { t } from "~/i18n";
 import { useSessionEvent } from "~/store/tinybase/hooks";
 import { parsePrepResponse } from "./parse";
 
@@ -94,14 +95,14 @@ export function usePrepWizard(sessionId: string): PrepData & {
 
       const parsed = parsePrepResponse(fullText);
       if (parsed.questions.length === 0 && parsed.checklist.length === 0) {
-        setError("Could not parse preparation items. Try regenerating.");
+        setError(t("prep.parseError"));
         return;
       }
       setQuestions(parsed.questions.map(makeItem));
       setChecklist(parsed.checklist.map(makeItem));
     } catch (err: unknown) {
       if (err instanceof Error && err.name === "AbortError") return;
-      setError("Preparation generation failed. Check your LLM connection.");
+      setError(t("prep.connectionError"));
     } finally {
       setIsGenerating(false);
     }

@@ -1,5 +1,6 @@
 import { cn } from "@hypr/utils";
 
+import { t } from "~/i18n";
 import { usePrepWizard, type PrepItem } from "./usePrepWizard";
 
 function PrepItemRow({
@@ -55,7 +56,7 @@ export function PrepWizard({ sessionId }: { sessionId: string }) {
           "p-6 text-sm text-muted-foreground",
         ])}
       >
-        Link a calendar event to use the preparation wizard.
+        {t("prep.linkEvent")}
       </div>
     );
   }
@@ -91,14 +92,14 @@ export function PrepWizard({ sessionId }: { sessionId: string }) {
             "disabled:opacity-50",
           ])}
         >
-          {isGenerating ? "Generating preparation..." : "Generate Preparation"}
+          {isGenerating ? t("prep.generating") : t("prep.generate")}
         </button>
       )}
 
       {questions.length > 0 && (
         <div className="flex flex-col gap-1">
           <h4 className="text-xs font-medium uppercase text-muted-foreground">
-            Questions to Ask
+            {t("prep.questionsToAsk")}
           </h4>
           {questions.map((q) => (
             <PrepItemRow key={q.id} item={q} onToggle={toggle} />
@@ -109,7 +110,7 @@ export function PrepWizard({ sessionId }: { sessionId: string }) {
       {checklist.length > 0 && (
         <div className="flex flex-col gap-1">
           <h4 className="text-xs font-medium uppercase text-muted-foreground">
-            Preparation Checklist
+            {t("prep.checklist")}
           </h4>
           {checklist.map((c) => (
             <PrepItemRow key={c.id} item={c} onToggle={toggle} />
@@ -128,7 +129,7 @@ export function PrepWizard({ sessionId }: { sessionId: string }) {
             "disabled:opacity-50",
           ])}
         >
-          {isGenerating ? "Regenerating..." : "Regenerate"}
+          {isGenerating ? t("prep.regenerating") : t("prep.regenerate")}
         </button>
       )}
     </div>

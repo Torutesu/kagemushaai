@@ -4,9 +4,10 @@ import { calculateConversationMetrics } from "~/services/metrics/calculator";
 import { parseTranscriptWords } from "~/stt/utils";
 
 import { createTaskId, type TaskConfig } from ".";
+import type { Store as MainStore } from "~/store/tinybase/store/main";
 
-function computeSessionMetrics(store: any, sessionId: string): string | null {
-  const allWords: any[] = [];
+function computeSessionMetrics(store: MainStore, sessionId: string): string | null {
+  const allWords: ReturnType<typeof parseTranscriptWords> = [];
 
   store.forEachRow("transcripts", (transcriptId: string) => {
     const sid = store.getCell("transcripts", transcriptId, "session_id");

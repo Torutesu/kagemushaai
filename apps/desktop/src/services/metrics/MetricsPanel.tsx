@@ -1,5 +1,6 @@
 import { cn } from "@hypr/utils";
 
+import { t } from "~/i18n";
 import {
   formatDuration,
   formatRatio,
@@ -10,7 +11,7 @@ export function MetricsPanel({ metrics }: { metrics: ConversationMetrics }) {
   return (
     <div className={cn(["flex flex-col gap-3", "p-4 text-sm"])}>
       <div className={cn(["flex items-center justify-between"])}>
-        <span className="text-muted-foreground">Meeting Duration</span>
+        <span className="text-muted-foreground">{t("metrics.duration")}</span>
         <span className="font-medium">
           {formatDuration(metrics.totalDurationMs)}
         </span>
@@ -23,7 +24,7 @@ export function MetricsPanel({ metrics }: { metrics: ConversationMetrics }) {
         >
           <div className={cn(["flex items-center justify-between"])}>
             <span className="font-medium">
-              {speaker.speakerId === "you" ? "You" : speaker.speakerId}
+              {speaker.speakerId === "you" ? t("metrics.you") : speaker.speakerId}
             </span>
             <span className="text-muted-foreground">
               {formatRatio(speaker.talkRatio)}
@@ -53,9 +54,9 @@ export function MetricsPanel({ metrics }: { metrics: ConversationMetrics }) {
               "text-xs text-muted-foreground",
             ])}
           >
-            <span>{speaker.wordsPerMinute} wpm</span>
-            <span>{speaker.wordCount} words</span>
-            <span>{speaker.questionCount} questions</span>
+            <span>{speaker.wordsPerMinute} {t("metrics.wpm")}</span>
+            <span>{speaker.wordCount} {t("metrics.words")}</span>
+            <span>{speaker.questionCount} {t("metrics.questions")}</span>
           </div>
         </div>
       ))}

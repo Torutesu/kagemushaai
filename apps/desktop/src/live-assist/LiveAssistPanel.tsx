@@ -4,6 +4,7 @@ import { streamText } from "ai";
 import { cn } from "@hypr/utils";
 
 import { useLanguageModel } from "~/ai/hooks/useLLMConnection";
+import { t } from "~/i18n";
 import { useListener } from "~/stt/contexts";
 import { extractKeyPoints, type KeyPoint } from "./extractKeyPoints";
 
@@ -88,7 +89,7 @@ export function LiveAssistPanel() {
       }
     } catch (error: unknown) {
       if (error instanceof Error && error.name === "AbortError") return;
-      setSummaryError("Summary generation failed");
+      setSummaryError(t("liveAssist.error"));
     } finally {
       setIsSummarizing(false);
     }
@@ -123,9 +124,9 @@ export function LiveAssistPanel() {
         ])}
       >
         <div className="flex items-center gap-2">
-          <span>Live Assist</span>
+          <span>{t("liveAssist.title")}</span>
           <span className="text-muted-foreground">
-            ({keyPoints.length} points)
+            ({keyPoints.length} {t("liveAssist.points")})
           </span>
         </div>
         {model && liveSegments.length >= 5 && (
@@ -138,7 +139,7 @@ export function LiveAssistPanel() {
               "disabled:opacity-50",
             ])}
           >
-            {isSummarizing ? "Summarizing..." : "Summarize"}
+            {isSummarizing ? t("liveAssist.summarizing") : t("liveAssist.summarize")}
           </button>
         )}
       </div>
@@ -158,7 +159,7 @@ export function LiveAssistPanel() {
             ])}
           >
             <div className="mb-1 text-xs font-medium text-primary">
-              AI Summary
+              {t("liveAssist.aiSummary")}
             </div>
             <p className="text-sm leading-relaxed">{summary}</p>
           </div>
@@ -171,7 +172,7 @@ export function LiveAssistPanel() {
               "text-sm text-muted-foreground",
             ])}
           >
-            Key points will appear here during the meeting...
+            {t("liveAssist.placeholder")}
           </div>
         ) : (
           <div className="flex flex-col gap-2">
