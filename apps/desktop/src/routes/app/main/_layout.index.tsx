@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Fragment, useEffect, useRef } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 
 import {
   type ImperativePanelHandle,
@@ -11,10 +11,12 @@ import {
 import { SyncProvider } from "~/calendar/components/context";
 import { PersistentChatPanel } from "~/chat/components/persistent-chat";
 import { useShell } from "~/contexts/shell";
+import { LiveAssistPanel } from "~/live-assist";
 import { useSearch } from "~/search/contexts/ui";
 import { Body } from "~/shared/main";
 import { LeftSidebar } from "~/sidebar";
 import { useTabs } from "~/store/zustand/tabs";
+import { useListener } from "~/stt/contexts";
 import { commands } from "~/types/tauri.gen";
 
 export const Route = createFileRoute("/app/main/_layout/")({
@@ -22,6 +24,7 @@ export const Route = createFileRoute("/app/main/_layout/")({
 });
 
 const CHAT_MIN_WIDTH_PX = 280;
+const LIVE_ASSIST_MIN_WIDTH_PX = 260;
 
 function Component() {
   const { leftsidebar, chat } = useShell();
@@ -32,6 +35,19 @@ function Component() {
   const previousQueryRef = useRef(query);
   const bodyPanelRef = useRef<ImperativePanelHandle>(null);
   const chatPanelContainerRef = useRef<HTMLDivElement>(null);
+
+  const sessionMode = useListener((state) => {
+    const sessionTab = currentTab?.type === "sessions" ? currentTab : null;
+    return sessionTab ? state.getSessionMode(sessionTab.id) : "inactive";
+  });
+  const [liveAssistDismissed, setLiveAssistDismissed] = useState(false);
+  const isLiveAssistOpen = sessionMode === "active" && !liveAssistDismissed;
+
+  useEffect(() => {
+    if (sessionMode === "active") {
+      setLiveAssistDismissed(false);
+    }
+  }, [sessionMode]);
 
   const isCalendarMode = currentTab?.type === "calendar";
   const hasCustomSidebar =
@@ -107,6 +123,22 @@ function Component() {
           >
             <Body />
           </ResizablePanel>
+          {isLiveAssistOpen && !isChatOpen && (
+            <>
+              <ResizableHandle className="w-0" />
+              <ResizablePanel
+                defaultSize={25}
+                minSize={15}
+                maxSize={40}
+                className="min-h-0 overflow-hidden"
+                style={{ minWidth: LIVE_ASSIST_MIN_WIDTH_PX }}
+              >
+                <div className="mx-1 h-full min-h-0 overflow-hidden py-1">
+                  <LiveAssistPanel />
+                </div>
+              </ResizablePanel>
+            </>
+          )}
           {isChatOpen && (
             <>
               <ResizableHandle className="w-0" />

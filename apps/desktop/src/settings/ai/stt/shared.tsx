@@ -93,7 +93,7 @@ const _PROVIDERS = [
   {
     disabled: false,
     id: "hyprnote",
-    displayName: "Char",
+    displayName: "Kagemusha AI",
     badge: "Recommended",
     icon: <CharProviderIcon />,
     baseUrl: new URL("/stt", env.VITE_API_URL).toString(),

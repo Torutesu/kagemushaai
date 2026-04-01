@@ -56,7 +56,7 @@ export function ConfigureProviders() {
         <HyprProviderCard
           ref={hyprAccordionRef}
           providerId="hyprnote"
-          providerName="Char"
+          providerName="Kagemusha AI"
           icon={<CharProviderIcon />}
           badge={PROVIDERS.find((p) => p.id === "hyprnote")?.badge}
         />

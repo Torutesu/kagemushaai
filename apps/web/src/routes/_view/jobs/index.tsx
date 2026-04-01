@@ -146,7 +146,7 @@ function CTASection() {
         </p>
         <div className="pt-6">
           <a
-            href="mailto:founders@char.com"
+            href="mailto:founders@kagemusha.ai"
             className="flex h-12 items-center justify-center rounded-full bg-linear-to-t from-stone-600 to-stone-500 px-6 text-base text-white shadow-md transition-all hover:scale-[102%] hover:shadow-lg active:scale-[98%] sm:text-lg"
           >
             Contact us

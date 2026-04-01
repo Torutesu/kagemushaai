@@ -54,10 +54,10 @@ function Component() {
               Download press materials, logos, screenshots, and learn more about
               Char. For press inquiries, contact us at{" "}
               <a
-                href="mailto:founders@char.com"
+                href="mailto:founders@kagemusha.ai"
                 className="text-stone-600 underline hover:text-stone-700"
               >
-                founders@char.com
+                founders@kagemusha.ai
               </a>
             </p>
           </div>
@@ -108,12 +108,12 @@ function Component() {
                       appIcon
                     />
                     <FinderAction
-                      href="mailto:founders@char.com"
+                      href="mailto:founders@kagemusha.ai"
                       iconImage="/api/images/icons/macos-mail.png"
                       label="Contact"
                     />
                     <FinderAction
-                      href="https://github.com/fastrepl/char"
+                      href="https://github.com/Torutesu/kagemushaai"
                       iconImage="/api/images/icons/github.webp"
                       label="GitHub"
                       external

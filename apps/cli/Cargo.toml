@@ -2,13 +2,13 @@
 name = "cli"
 version = "0.1.0"
 edition = "2024"
-homepage = "https://char.com"
+homepage = "https://char.com" # Kagemusha AI
 license = "GPL-3.0"
-repository = "https://github.com/fastrepl/char"
+repository = "https://github.com/fastrepl/char" # Kagemusha AI
 description = "Live transcription and audio tools"
 
 [[bin]]
-name = "char"
+name = "kagemusha"
 path = "src/main.rs"
 
 [dependencies]

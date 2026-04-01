@@ -57,9 +57,9 @@ function BrandSection({ currentYear }: { currentYear: number }) {
         to="/"
         className="mb-4 inline-block font-serif text-2xl font-semibold"
       >
-        Char
+        Kagemusha AI
       </Link>
-      <p className="mb-4 text-sm text-neutral-500">Fastrepl © {currentYear}</p>
+      <p className="mb-4 text-sm text-neutral-500">Kagemusha AI © {currentYear}</p>
       <EmailSubscribeField
         className="mb-4 max-w-72"
         formClassName="laptop:border-l-0"
@@ -141,7 +141,7 @@ function ProductLinks() {
         </li>
         <li>
           <a
-            href="https://github.com/fastrepl/char"
+            href="https://github.com/Torutesu/kagemushaai"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1 text-sm text-neutral-600 no-underline transition-colors hover:text-stone-600 hover:underline hover:decoration-dotted"
@@ -150,17 +150,7 @@ function ProductLinks() {
             <ExternalLinkIcon className="size-3" />
           </a>
         </li>
-        <li>
-          <a
-            href="https://status.hyprnote.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 text-sm text-neutral-600 no-underline transition-colors hover:text-stone-600 hover:underline hover:decoration-dotted"
-          >
-            Status
-            <ExternalLinkIcon className="size-3" />
-          </a>
-        </li>
+        {/* Status page link removed - no status page yet */}
       </ul>
     </div>
   );
@@ -251,7 +241,7 @@ function ResourcesLinks() {
         </li>
         <li>
           <a
-            href="https://github.com/fastrepl/char/discussions"
+            href="https://github.com/Torutesu/kagemushaai/discussions"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1 text-sm text-neutral-600 no-underline transition-colors hover:text-stone-600 hover:underline hover:decoration-dotted"
@@ -262,7 +252,7 @@ function ResourcesLinks() {
         </li>
         <li>
           <a
-            href="mailto:support@hyprnote.com"
+            href="mailto:support@kagemusha.ai"
             className="inline-flex items-center gap-1 text-sm text-neutral-600 no-underline transition-colors hover:text-stone-600 hover:underline hover:decoration-dotted"
           >
             Support

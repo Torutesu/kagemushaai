@@ -236,7 +236,7 @@ function LeftNav({
         to="/why-char/"
         className="hidden text-sm text-neutral-600 decoration-dotted transition-all hover:text-neutral-800 hover:underline md:block"
       >
-        Why Char
+        Why Kagemusha AI
       </Link>
       <ProductDropdown
         isProductOpen={isProductOpen}
@@ -321,7 +321,7 @@ function Logo() {
       to="/"
       className="mr-4 font-serif text-2xl font-semibold transition-transform hover:scale-105"
     >
-      Char
+      Kagemusha AI
     </Link>
   );
 }
@@ -648,7 +648,7 @@ function MobileMenuLinks({
         onClick={() => setIsMenuOpen(false)}
         className="block text-base text-neutral-700 transition-colors hover:text-neutral-900"
       >
-        Why Char
+        Why Kagemusha AI
       </Link>
       <MobileProductSection
         isProductOpen={isProductOpen}

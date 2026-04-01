@@ -129,7 +129,7 @@ export function SettingsApp() {
                 {(telemetryConsentField) => (
                   <AppSettingsView
                     autostart={{
-                      title: "Start Char at login",
+                      title: "Start Kagemusha AI at login",
                       description: "Always ready without manually launching.",
                       value: autostartField.state.value,
                       onChange: (val) => autostartField.handleChange(val),

@@ -14,7 +14,7 @@ interface RouterContext {
   queryClient: QueryClient;
 }
 
-const TITLE = "Char - Meeting Notes You Own";
+const TITLE = "Kagemusha AI - Meeting Notes You Own";
 const DESCRIPTION =
   "Char is a private, on-device AI notepad that enhances your own notes—without bots, cloud recording, or meeting intrusion. Stay engaged, build your personal knowledge base, and export to tools like Notion on your terms.";
 const KEYWORDS =
@@ -31,12 +31,12 @@ export const Route = createRootRouteWithContext<RouterContext>()({
       { title: TITLE },
       { name: "description", content: DESCRIPTION },
       { name: "keywords", content: KEYWORDS },
-      { name: "ai-sitemap", content: "https://char.com/llms.txt" },
+      { name: "ai-sitemap", content: "https://kagemusha.ai/llms.txt" },
       { name: "ai-content", content: "public" },
       { property: "og:type", content: "website" },
       { property: "og:title", content: TITLE },
       { property: "og:description", content: DESCRIPTION },
-      { property: "og:url", content: "https://char.com" },
+      { property: "og:url", content: "https://kagemusha.ai" },
       {
         property: "og:image",
         content: "/api/images/hyprnote/og-image.jpg",
@@ -48,7 +48,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
       { name: "twitter:creator", content: "@getcharnotes" },
       { name: "twitter:title", content: TITLE },
       { name: "twitter:description", content: DESCRIPTION },
-      { name: "twitter:url", content: "https://char.com" },
+      { name: "twitter:url", content: "https://kagemusha.ai" },
       {
         name: "twitter:image",
         content: "/api/images/hyprnote/og-image.jpg",

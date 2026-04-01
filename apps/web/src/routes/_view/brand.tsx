@@ -37,7 +37,7 @@ export const Route = createFileRoute("/_view/brand")({
       {
         name: "description",
         content:
-          "Download Char logos, icons, and brand assets. Learn about our visual identity, typography, and color palette.",
+          "Download Kagemusha AI logos, icons, and brand assets. Learn about our visual identity, typography, and color palette.",
       },
     ],
   }),
@@ -213,7 +213,7 @@ function HeroSection() {
           Brand
         </h1>
         <p className="text-lg text-neutral-600 sm:text-xl">
-          Download Char logos, icons, and brand assets. Learn about our visual
+          Download Kagemusha AI logos, icons, and brand assets. Learn about our visual
           identity, typography, and color palette.
         </p>
       </div>
