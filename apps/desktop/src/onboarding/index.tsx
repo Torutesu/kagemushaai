@@ -181,7 +181,7 @@ export function TabContentOnboarding({
                 auth.session
                   ? "Signed in"
                   : didSkipLogin
-                    ? "Skipped"
+                    ? "Local Mode"
                     : "Account"
               }
               status={getStepStatus("login", currentStep)}
