@@ -1,6 +1,25 @@
 import { md2json } from "@hypr/tiptap/shared";
 
+import { calculateConversationMetrics } from "~/services/metrics/calculator";
+import { parseTranscriptWords } from "~/stt/utils";
+
 import { createTaskId, type TaskConfig } from ".";
+
+function computeSessionMetrics(store: any, sessionId: string): string | null {
+  const allWords: any[] = [];
+
+  store.forEachRow("transcripts", (transcriptId: string) => {
+    const sid = store.getCell("transcripts", transcriptId, "session_id");
+    if (sid !== sessionId) return;
+    const words = parseTranscriptWords(store, transcriptId);
+    allWords.push(...words);
+  });
+
+  if (allWords.length === 0) return null;
+
+  const metrics = calculateConversationMetrics(allWords);
+  return JSON.stringify(metrics);
+}
 
 const onSuccess: NonNullable<TaskConfig<"enhance">["onSuccess"]> = ({
   text,
@@ -16,8 +35,14 @@ const onSuccess: NonNullable<TaskConfig<"enhance">["onSuccess"]> = ({
 
   try {
     const jsonContent = md2json(text);
+    const metricsJson = computeSessionMetrics(store, args.sessionId);
+
+    const contentWithMetrics = metricsJson
+      ? JSON.stringify({ ...jsonContent, _conversationMetrics: JSON.parse(metricsJson) })
+      : JSON.stringify(jsonContent);
+
     store.setPartialRow("enhanced_notes", args.enhancedNoteId, {
-      content: JSON.stringify(jsonContent),
+      content: contentWithMetrics,
     });
   } catch (error) {
     console.error("Failed to convert markdown to JSON:", error);
